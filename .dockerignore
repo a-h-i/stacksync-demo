@@ -1,0 +1,12 @@
+**/__pycache__/
+**/*.pyc
+.venv
+venv
+.env
+.DS_Store
+.git
+.gitignore
+dist
+build
+node_modules
+tests

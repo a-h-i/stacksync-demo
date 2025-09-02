@@ -1,0 +1,22 @@
+[project]
+name = "app"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Ahmed Ismail",email = "ahm3d.hisham@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "flask (>=3.1.2,<4.0.0)",
+    "numpy (>=2.3.2,<3.0.0)",
+    "pandas (>=2.3.2,<3.0.0)",
+    "gunicorn (>=23.0.0,<24.0.0)"
+]
+
+
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

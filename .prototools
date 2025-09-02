@@ -1,0 +1,5 @@
+poetry = "^2.1"
+python = "^3.12"
+
+[settings]
+auto-install = true

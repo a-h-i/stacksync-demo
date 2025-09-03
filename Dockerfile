@@ -22,32 +22,34 @@ RUN git clone --depth 1 --recursive https://github.com/google/nsjail.git /tmp/ns
 
 
 
-FROM python:3.11-slim AS runner
+FROM python:3.12-slim AS runner
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     libnl-route-3-200 \
     protobuf-compiler \
     && rm -rf /var/lib/apt/list
+RUN useradd -m -u 65535 appuser
+RUN mkdir /app
 
 
 COPY --from=builder /usr/local/bin/nsjail /usr/local/bin/nsjail
 
-RUN pip install flask numpy pandas poetry
-RUN mkdir /app
 WORKDIR /app
 COPY src/* /app
 COPY pyproject.toml poetry.lock README.md /app
-RUN poetry install
+
+RUN pip install --no-cache-dir flask numpy pandas gunicorn
+RUN chown -R 65535:65535 /app
+USER 65535:65535
 
 
 
 
-# Port for Cloud Run / local
+
+
 ENV PORT=8080
 EXPOSE 8080
 
-RUN useradd -m -u 65534 appuser && chown -R 65534:65534 /app
-USER 65534:65534
 
 # Gunicorn for production serving
-CMD ["poetry", "run" ,"gunicorn","-b","0.0.0.0:8080","app:app","--workers","1","--threads","4","--timeout","0"]
+CMD ["gunicorn","-b","0.0.0.0:8080","app:app","--workers","1","--threads","4","--timeout","0"]

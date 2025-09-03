@@ -23,18 +23,7 @@ Response (200):
 }
 ```
 
-Errors (examples):
-```json
-{ "error": { "type":"ValidationError", "message":"missing 'script' field" } }
-{ "error": { "type":"ExecutionError", "message":"main() is missing or not callable" }, "stdout": "..." }
-{ "error": { "type":"SerializationError", "message":"main() must return JSON-serializable data" }, "stdout": "..." }
-```
 
-## Security model
-
-- **nsjail** with PID/Mount/User/Net namespaces, read-only root FS.
-- No network (even loopback is disabled).
-- Tight resource limits
 
 ## Local quickstart
 

@@ -1,4 +1,4 @@
 config:
-  image:name: main-3b61df0-1756919949
+  image:name: main-f29ea47-1756920304
   gcp:project: amarelo-453114
   gcp:region: europe-west1

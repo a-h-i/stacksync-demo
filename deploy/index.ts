@@ -39,12 +39,6 @@ const svc = new gcp.cloudrunv2.Service('stacksync-demo', {
                 ports: {
                     containerPort: 8080,
                 },
-                envs: [
-                    {
-                        name: "NSJAIL_MODE",
-                        value: "strict"
-                    }
-                ],
                 resources: {
                     limits: {
                         cpu: "1",

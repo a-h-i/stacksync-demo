@@ -51,6 +51,12 @@ curl -s -X POST http://localhost:8080/execute \
   -d '{"script":"def main():\n    import numpy as np\n    print(np.arange(3))\n    return {\"sum\": int(np.sum([1,2,3])) }\n"}' | jq
 ```
 
+```bash
+curl -s -X POST https://stacksync-demo-7j7yxeecia-ew.a.run.app/execute \
+  -H 'Content-Type: application/json' \
+  -d '{"script":"def main():\n    import numpy as np\n    print(np.arange(3))\n    return {\"sum\": int(np.sum([1,2,3])) }\n"}' | jq
+```
+
 Expected:
 ```json
 {

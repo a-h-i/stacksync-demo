@@ -41,7 +41,7 @@ Errors (examples):
 Build and run:
 ```bash
 docker build -t stacksync-demo:latest .
-docker run --cap-add=SYS_ADMIN --rm -p 8080:8080 stacksync-demo:latest
+docker run --rm -p 8080:8080 stacksync-demo:latest
 ```
 
 Try it:

@@ -39,7 +39,6 @@ def execute():
         script_file.write(script)
         script_file.close()
         shutil.copy("/app/harness.py", os.path.join(d, "harness.py"))
-        os.chown(d,65534, 65534)
 
         try:
             proc = run_in_jail(d)

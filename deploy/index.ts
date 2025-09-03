@@ -28,10 +28,14 @@ const svc = new gcp.cloudrunv2.Service('stacksync-demo', {
     name: 'stacksync-demo',
     location: region,
     ingress: "INGRESS_TRAFFIC_ALL",
+    deletionProtection: false,
     template: {
         scaling: {
             minInstanceCount: 1,
             maxInstanceCount: 1,
+        },
+        annotations: {
+              "app.a-hi/image": imageName,
         },
         containers: [
             {
@@ -49,7 +53,7 @@ const svc = new gcp.cloudrunv2.Service('stacksync-demo', {
         ]
     }
 }, {
-    dependsOn: [repo]
+    dependsOn: [repo],
 })
 
 

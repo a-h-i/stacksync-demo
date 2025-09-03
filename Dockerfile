@@ -46,5 +46,8 @@ RUN poetry install
 ENV PORT=8080
 EXPOSE 8080
 
+RUN useradd -m -u 65534 appuser && chown -R 65534:65534 /app
+USER 65534:65534
+
 # Gunicorn for production serving
 CMD ["poetry", "run" ,"gunicorn","-b","0.0.0.0:8080","app:app","--workers","1","--threads","4","--timeout","0"]

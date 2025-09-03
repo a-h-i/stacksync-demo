@@ -1,0 +1,10 @@
+name: stacksync-demo
+description: Deploy to google cloud run
+runtime:
+  name: nodejs
+  options:
+    packagemanager: pnpm
+config:
+  pulumi:tags:
+    value:
+      pulumi:template: typescript

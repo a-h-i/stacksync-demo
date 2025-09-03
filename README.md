@@ -34,16 +34,14 @@ Errors (examples):
 
 - **nsjail** with PID/Mount/User/Net namespaces, read-only root FS.
 - No network (even loopback is disabled).
-- Tight resource limits: 1 CPU, 3s wall time, 256 MiB memory, 10 MiB file size, max 64 pids.
-- Writable paths: `/sandbox` (bind of a per-request temp dir), `/tmp` (tmpfs).
-- Cloud Run adds an extra sandbox layer.
+- Tight resource limits
 
 ## Local quickstart
 
 Build and run:
 ```bash
-docker build -t safe-py:latest .
-docker run --cap-add=SYS_ADMIN --rm -p 8080:8080 safe-py:latest
+docker build -t stacksync-demo:latest .
+docker run --cap-add=SYS_ADMIN --rm -p 8080:8080 stacksync-demo:latest
 ```
 
 Try it:
@@ -59,26 +57,6 @@ Expected:
   "result": { "sum": 6 },
   "stdout": "[0 1 2]\n"
 }
-```
-
-## Deploy to Cloud Run
-
-```bash
-gcloud builds submit --tag gcr.io/$PROJECT_ID/safe-py
-gcloud run deploy safe-py \
-  --image gcr.io/$PROJECT_ID/safe-py \
-  --region europe-west1 \
-  --platform managed \
-  --allow-unauthenticated \
-  --memory 512Mi \
-  --cpu 1
-```
-
-Test (replace `$URL` with Cloud Run URL):
-```bash
-curl -s -X POST "$URL/execute" \
-  -H 'Content-Type: application/json' \
-  -d '{"script":"def main():\n    import os, pandas as pd\n    print(list(sorted(os.listdir(\"/\")))[:5])\n    return { \"rows\": int(pd.DataFrame({\"a\":[1,2,3]}).shape[0]) }\n"}' | jq
 ```
 
 ## Notes

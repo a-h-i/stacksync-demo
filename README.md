@@ -43,7 +43,7 @@ Errors (examples):
 Build and run:
 ```bash
 docker build -t safe-py:latest .
-docker run --rm -p 8080:8080 safe-py:latest
+docker run --cap-add=SYS_ADMIN --rm -p 8080:8080 safe-py:latest
 ```
 
 Try it:

@@ -1,42 +1,44 @@
 
-FROM python:3.12-slim AS base
+FROM python:3.12-slim AS builder
 
 # Install nsjail and minimal tools
 
 
-RUN apt-get -y update && apt-get install -y \
-    libc6 \
-    libstdc++6 \
-    libprotobuf32 \
-    libnl-route-3-200
-
-RUN apt-get install -y \
-    autoconf \
-    bison \
-    flex \
-    gcc \
-    g++ \
-    git \
-    libprotobuf-dev \
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    build-essential git pkg-config \
+    flex bison \
+    clang \
+    libprotobuf-dev protobuf-compiler \
     libnl-route-3-dev \
-    libtool \
-    make \
-    pkg-config \
-    protobuf-compiler
+    libcap-dev \
+    libssl-dev \
+ && rm -rf /var/lib/apt/lists/*
 
-RUN git clone https://github.com/google/nsjail.git
-WORKDIR /nsjail
-RUN make clean && make
-RUN cp nsjail /bin
-WORKDIR /
-RUN pip install poetry
+RUN git clone --depth 1 --recursive https://github.com/google/nsjail.git /tmp/nsjail \
+ && make -C /tmp/nsjail clean \
+ && make -C /tmp/nsjail -j"$(nproc)" \
+ && mv /tmp/nsjail/nsjail /usr/local/bin/nsjail \
+ && rm -rf /tmp/nsjail
+
+
+
+FROM python:3.11-slim AS runner
+
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    libnl-route-3-200 \
+    protobuf-compiler \
+    && rm -rf /var/lib/apt/list
+
+
+COPY --from=builder /usr/local/bin/nsjail /usr/local/bin/nsjail
+
+RUN pip install flask numpy pandas poetry
 RUN mkdir /app
 WORKDIR /app
 COPY src/* /app
 COPY pyproject.toml poetry.lock README.md /app
 RUN poetry install
 
-RUN pip install numpy pandas
 
 
 

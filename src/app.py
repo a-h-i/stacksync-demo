@@ -10,7 +10,6 @@ def run_in_jail(workdir: str):
     proc = subprocess.run(
         [
          "nsjail", "--config", "/app/nsjail.cfg",
-         "--tmpfsmount", "/tmp",
          "--cwd",
          workdir,
          "--",
@@ -40,6 +39,7 @@ def execute():
         script_file.write(script)
         script_file.close()
         shutil.copy("/app/harness.py", os.path.join(d, "harness.py"))
+        os.chown(d,65534, 65534)
 
         try:
             proc = run_in_jail(d)

@@ -1,4 +1,4 @@
-import json, os, tempfile, subprocess, pathlib, shutil
+import json, os, tempfile, subprocess, shutil
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
@@ -146,7 +146,7 @@ def execute():
 
         return jsonify(result=result, stdout=user_stdout)
 
-@app.get("/healthz")
+@app.get("/health")
 def health():
     return "ok", 200
 
